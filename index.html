@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+
+<html lang="ku" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ژمێریاری ڕۆژی لەدایکبوون</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+```
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #000000 0%, #2d2d2d 50%, #000000 100%);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+    }
+
+    .container {
+        background: white;
+        border-radius: 30px;
+        padding: 50px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        max-width: 600px;
+        width: 100%;
+        text-align: center;
+        border: 3px solid #000;
+    }
+
+    h1 {
+        color: #000;
+        font-size: 2.5em;
+        margin-bottom: 30px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .input-section {
+        margin-bottom: 30px;
+    }
+
+    label {
+        display: block;
+        color: #333;
+        font-size: 1.2em;
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
+
+    input[type="date"] {
+        width: 100%;
+        padding: 15px;
+        border: 2px solid #000;
+        border-radius: 15px;
+        font-size: 1.1em;
+        text-align: center;
+        background: #f5f5f5;
+        transition: all 0.3s;
+    }
+
+    input[type="date"]:focus {
+        outline: none;
+        border-color: #333;
+        background: white;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    }
+
+    button {
+        background: #000;
+        color: white;
+        border: none;
+        padding: 15px 40px;
+        font-size: 1.2em;
+        border-radius: 15px;
+        cursor: pointer;
+        transition: all 0.3s;
+        margin-top: 20px;
+        font-weight: bold;
+    }
+
+    button:hover {
+        background: #333;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .result {
+        margin-top: 40px;
+        padding: 30px;
+        background: #000;
+        color: white;
+        border-radius: 20px;
+        display: none;
+        animation: fadeIn 0.5s;
+    }
+
+    .result.show {
+        display: block;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .countdown {
+        font-size: 3em;
+        font-weight: bold;
+        margin: 20px 0;
+        color: white;
+    }
+
+    .message {
+        font-size: 1.5em;
+        margin: 15px 0;
+        line-height: 1.6;
+    }
+
+    .celebration {
+        font-size: 4em;
+        margin: 20px 0;
+    }
+
+    .past-message {
+        background: #333;
+    }
+
+    .info-box {
+        background: white;
+        color: #000;
+        padding: 20px;
+        border-radius: 15px;
+        margin-top: 20px;
+        border: 2px solid white;
+    }
+
+    .info-box p {
+        margin: 10px 0;
+        font-size: 1.1em;
+    }
+</style>
+```
+
+</head>
+<body>
+    <div class="container">
+        <h1>🎂 ژمێریاری ڕۆژی لەدایکبوون 🎂</h1>
+
+```
+    <div class="input-section">
+        <label for="birthday">بەرواری لەدایکبوونت داخڵ بکە:</label>
+        <input type="date" id="birthday" required>
+    </div>
+
+    <button onclick="calculateBirthday()">حساب بکە</button>
+
+    <div id="result" class="result"></div>
+</div>
+
+<script>
+    function calculateBirthday() {
+        const birthdayInput = document.getElementById('birthday').value;
+        
+        if (!birthdayInput) {
+            alert('تکایە بەرواری لەدایکبوونت داخڵ بکە');
+            return;
+        }
+
+        const birthday = new Date(birthdayInput);
+        const today = new Date();
+        
+        // Set time to midnight for accurate day calculation
+        birthday.setHours(0, 0, 0, 0);
+        today.setHours(0, 0, 0, 0);
+
+        // Calculate next birthday
+        let nextBirthday = new Date(today.getFullYear(), birthday.getMonth(), birthday.getDate());
+        
+        // If birthday has passed this year, use next year
+        if (nextBirthday < today) {
+            nextBirthday.setFullYear(today.getFullYear() + 1);
+        }
+
+        // Calculate difference in days
+        const diffTime = nextBirthday - today;
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+        // Calculate months
+        let months = nextBirthday.getMonth() - today.getMonth();
+        if (months < 0) {
+            months += 12;
+        }
+
+        const resultDiv = document.getElementById('result');
+        
+        if (diffDays === 0) {
+            // Today is the birthday!
+            resultDiv.innerHTML = `
+                <div class="celebration">🎉 🎊 🎈</div>
+                <div class="countdown">پیرۆز بێت!</div>
+                <div class="message">ئەمڕۆ ڕۆژی لەدایکبوونتە! 🎂</div>
+                <div class="celebration">🎁 🎉 🎊</div>
+            `;
+        } else if (diffDays > 0) {
+            // Birthday is coming
+            resultDiv.innerHTML = `
+                <div class="countdown">${diffDays}</div>
+                <div class="message">ڕۆژ ماوە بۆ ڕۆژی لەدایکبوونت! 🎂</div>
+                <div class="info-box">
+                    <p><strong>مانگ:</strong> ${months} مانگ</p>
+                    <p><strong>بەروار:</strong> ${nextBirthday.toLocaleDateString('ku')}</p>
+                </div>
+            `;
+        } else {
+            // Birthday has passed (shouldn't happen with current logic, but just in case)
+            const daysPassed = Math.abs(diffDays);
+            resultDiv.innerHTML = `
+                <div class="past-message">
+                    <div class="message">ڕۆژی لەدایکبوونت تێپەڕیوە! 😊</div>
+                    <div class="countdown">${daysPassed}</div>
+                    <div class="message">ڕۆژ تێپەڕیوە لە ڕۆژی لەدایکبوونت</div>
+                </div>
+            `;
+        }
+
+        resultDiv.classList.add('show');
+    }
+
+    // Allow Enter key to submit
+    document.getElementById('birthday').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            calculateBirthday();
+        }
+    });
+</script>
+```
+
+</body>
+</html>
